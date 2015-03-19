@@ -1,0 +1,21 @@
+---
+title: "Coursera Reproducible Research - Peer Assessment 2"
+author: "Jonathan Hines"
+date: "Thursday, March 19, 2015"
+output: html_document:
+    keep_md: true
+---
+
+```{r}
+# If the source isn't downloaded yet go get it and download it
+source_data_file <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+work_data_file <- "project.bz2"
+if (!file.exists(work_data_file)) {
+  if( OS.type == "windows" ) {
+    download.file(source_data_file, destfile=work_data_file, mode="wb")
+  } else {
+    download.file(source_data_file, destfile=work_data_file, mode="wb", method = "curl")
+  }
+  write(date(), file="dateDownloaded.txt")
+}
+raw_data <- read.csv(bzfile(work_data_file))
