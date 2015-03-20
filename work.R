@@ -1,8 +1,8 @@
 # If the source isn't downloaded yet go get it and download it
 source_data_file <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
-work_data_file <- "assignment.bz2"
+work_data_file <- "assignment.csv.bz2"
 if (!file.exists(work_data_file)) {
-  if( Sys.info()['sysname'] == "windows" ) {
+  if( Sys.info()['sysname'] == "Windows" ) {
     download.file(source_data_file, destfile=work_data_file, mode="wb")
   } else {
     download.file(source_data_file, destfile=work_data_file, method = "curl")
@@ -23,3 +23,18 @@ fso <- fatalities_sum[order(fatalities_sum$x,decreasing = TRUE),]
 
 #Plot it to illustrate the most dangerous event types
 barplot(head(fso$x), names.arg=head(fso$EventType))
+
+
+
+#Assess Injuries
+# Take a look at the event types that cause the most fatalities
+injuries_sum <- aggregate(raw_data$INJURIES,list(EventType = raw_data$EVTYPE) ,sum)
+
+#get the list sorted by fatalities descending
+fso <- fatalities_sum[order(fatalities_sum$x,decreasing = TRUE),]
+
+#Plot it to illustrate the most dangerous event types
+barplot(head(fso$x), names.arg=head(fso$EventType))
+
+#a box plot could be a better way of displaying the data
+boxplot(INJURIES ~ EVTYPE, raw_data)
