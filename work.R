@@ -12,7 +12,6 @@ if (!file.exists(work_data_file)) {
 
 # Read the data
 if(!exists("clean_data")){
-  install.packages("stringr", dependencies=TRUE)
   library(stringr)
   raw_data <- read.csv(bzfile(work_data_file), stringsAsFactors = F, strip.white = T)
   # before 1996 not all events were recorded, therefore eliminate them to remove bias
@@ -42,6 +41,16 @@ fso <- fatalities_sum[order(fatalities_sum$x,decreasing = TRUE),]
 #Plot it to illustrate the most dangerous event types
 barplot(head(fso$x, n = 10), names.arg=head(fso$EventType, n = 10), las=2)
 
+#Assess Injuries
+# Take a look at the event types that cause the most fatalities
+injuries_sum <- aggregate(clean_data$INJURIES,list(EventType = clean_data$EVTYPE) ,sum)
+
+#get the list sorted by fatalities descending
+iso <- injuries_sum[order(injuries_sum$x,decreasing = TRUE),]
+
+#Plot it to illustrate the most dangerous event types
+barplot(head(iso$x, n = 10), names.arg=head(iso$EventType, n = 10), las=2)
+
 
 ## Property Damage
 propdmg_sum <- aggregate(clean_data$PROPDMG,list(EventType = clean_data$EVTYPE) ,sum)
@@ -56,17 +65,6 @@ barplot(head(cso$x, n = 10), names.arg=head(cso$EventType, n = 10), las=2)
 
 
 
-
-
-#Assess Injuries
-# Take a look at the event types that cause the most fatalities
-injuries_sum <- aggregate(clean_data$INJURIES,list(EventType = clean_data$EVTYPE) ,sum)
-
-#get the list sorted by fatalities descending
-iso <- injuries_sum[order(injuries_sum$x,decreasing = TRUE),]
-
-#Plot it to illustrate the most dangerous event types
-barplot(head(iso$x, n = 10), names.arg=head(iso$EventType, n = 10), las=2)
 
 top_n = 8
 top_is = head(iso, n = top_n)
